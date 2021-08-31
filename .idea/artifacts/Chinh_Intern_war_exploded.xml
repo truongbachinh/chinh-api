@@ -1,0 +1,38 @@
+<component name="ArtifactManager">
+  <artifact type="exploded-war" name="Chinh_Intern:war exploded">
+    <output-path>$PROJECT_DIR$/out/artifacts/Chinh_Intern_war_exploded</output-path>
+    <root id="root">
+      <element id="javaee-facet-resources" facet="Chinh_Intern/web/Web" />
+      <element id="directory" name="WEB-INF">
+        <element id="directory" name="classes">
+          <element id="module-output" name="Chinh_Intern" />
+        </element>
+        <element id="directory" name="lib">
+          <element id="library" level="project" name="Maven: com.fasterxml.jackson.core:jackson-annotations:2.2.3" />
+          <element id="library" level="project" name="Maven: com.fasterxml.jackson.core:jackson-core:2.2.3" />
+          <element id="library" level="project" name="Maven: com.google.code.gson:gson:2.8.5" />
+          <element id="library" level="project" name="Maven: com.google.protobuf:protobuf-java:3.11.4" />
+          <element id="library" level="project" name="Maven: com.fasterxml.jackson.core:jackson-databind:2.2.3" />
+          <element id="library" level="project" name="Maven: com.oracle.database.ha:ons:11.2.0.4" />
+          <element id="library" level="project" name="Maven: com.oracle.database.ha:simplefan:11.2.0.4" />
+          <element id="library" level="project" name="Maven: com.oracle.database.jdbc:ojdbc8:12.2.0.1" />
+          <element id="library" level="project" name="Maven: com.oracle.database.jdbc:ojdbc6:11.2.0.4" />
+          <element id="library" level="project" name="Maven: com.oracle.database.jdbc:ucp:11.2.0.4" />
+          <element id="library" level="project" name="Maven: com.oracle.database.security:osdt_cert:11.2.0.4" />
+          <element id="library" level="project" name="Maven: com.oracle.database.security:osdt_core:11.2.0.4" />
+          <element id="library" level="project" name="Maven: com.oracle.database.security:oraclepki:11.2.0.4" />
+          <element id="library" level="project" name="Maven: com.sun.mail:javax.mail:1.6.2" />
+          <element id="library" level="project" name="Maven: javax.servlet.jsp.jstl:javax.servlet.jsp.jstl-api:1.2.1" />
+          <element id="library" level="project" name="Maven: javax.activation:activation:1.1" />
+          <element id="library" level="project" name="Maven: javax.servlet.jsp:javax.servlet.jsp-api:2.2.1" />
+          <element id="library" level="project" name="Maven: javax.servlet:servlet-api:2.5" />
+          <element id="library" level="project" name="Maven: javax:javaee-api:8.0.1" />
+          <element id="library" level="project" name="Maven: mysql:mysql-connector-java:8.0.21" />
+          <element id="library" level="project" name="Maven: org.codehaus.jackson:jackson-core-asl:1.9.13" />
+          <element id="library" level="project" name="Maven: org.codehaus.jackson:jackson-mapper-asl:1.9.13" />
+          <element id="file-copy" path="$PROJECT_DIR$/../../../util_java/jstl-1.2.jar" />
+        </element>
+      </element>
+    </root>
+  </artifact>
+</component>
