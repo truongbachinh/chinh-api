@@ -3,5 +3,49 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_4_0.xsd"
          version="4.0">
+<!--    <display-name>CHINH API</display-name>-->
+<!--    <welcome-file-list>-->
+<!--        <welcome-file>index</welcome-file>-->
+<!--    </welcome-file-list>-->
+<!--    <servlet>-->
+<!--        <servlet-name>EmployeeController</servlet-name>-->
+<!--        <servlet-class>controller.EmployeeController</servlet-class>-->
+<!--    </servlet>-->
+<!--    <servlet-mapping>-->
+<!--        <servlet-name>EmployeeController</servlet-name>-->
+<!--        <url-pattern>/api-employee</url-pattern>-->
+<!--    </servlet-mapping>-->
+
+<!--    <servlet>-->
+<!--        <servlet-name>DepartmentController</servlet-name>-->
+<!--        <servlet-class>controller.DepartmentController</servlet-class>-->
+<!--    </servlet>-->
+<!--    <servlet-mapping>-->
+<!--        <servlet-name>DepartmentController</servlet-name>-->
+<!--        <url-pattern>/api-department</url-pattern>-->
+<!--    </servlet-mapping>-->
+
+<!--    <servlet>-->
+<!--        <servlet-name>JobHistoryController</servlet-name>-->
+<!--        <servlet-class>controller.JobHistoryController</servlet-class>-->
+<!--    </servlet>-->
+<!--    <servlet-mapping>-->
+<!--        <servlet-name>JobHistoryController</servlet-name>-->
+<!--        <url-pattern>/api-job-history</url-pattern>-->
+<!--    </servlet-mapping>-->
+    <context-param>
+        <param-name>jdbcURL</param-name>
+        <param-value>jdbc:oracle:thin:@10.240.89.177:1521:hr</param-value>
+    </context-param>
+
+    <context-param>
+        <param-name>jdbcUsername</param-name>
+        <param-value>hr</param-value>
+    </context-param>
+
+    <context-param>
+        <param-name>jdbcPassword</param-name>
+        <param-value>hr</param-value>
+    </context-param>
 
 </web-app>

@@ -1,10 +1,15 @@
 package controller;
 
-import dao.EmployeeDAO;
+import controller.template.APIData;
+import controller.template.DataTemplate;
+import controller.util.DataType;
+import controller.util.Type;
+import controller.util.TypeFactory;
 import dao.JobHistoryDAO;
-import dao.impl.EmployeeDaoImpl;
 import dao.impl.JobHistoryDaoImpl;
 import model.JobHistory;
+import services.JobHistoryService;
+import services.impl.JobHistoryServiceImpl;
 
 import javax.inject.Inject;
 import javax.servlet.ServletException;
@@ -18,78 +23,50 @@ import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
 import java.util.List;
 
-@WebServlet( urlPatterns = "/api-job-history")
+@WebServlet(name = "employee", urlPatterns = "/api-job-history")
 public class JobHistoryController extends HttpServlet {
     @Inject
-    private JobHistoryDAO jobHistoryDAO = new JobHistoryDaoImpl();
+    private JobHistoryService jobHistoryService = new JobHistoryServiceImpl();
+
+    @Inject
+    private DataTemplate apiData = new APIData();
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         doGet(request, response);
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        setJsonResponse(request, response);
+
         if (getAction(request)) {
             String action = request.getParameter("action");
             String type = request.getParameter("type");
-           if (action.equalsIgnoreCase("list") && type.equalsIgnoreCase("json")) {
+            if (action.equalsIgnoreCase("insert")) {
+                jobHistoryService.addJobHis(request, response);
+            } else if (action.equalsIgnoreCase("list") && type.equalsIgnoreCase("json")) {
                 Type typeJson = TypeFactory.getTypeReq(DataType.JSON);
-                try {
-                    String jsonListEmp = typeJson.getType(listJob(request, response));
-                    // print result
-                    PrintWriter out = response.getWriter();
-                    out.print(jsonListEmp);
-                    out.flush();
-                    out.close();
-                } catch (JAXBException e) {
-                    e.printStackTrace();
-                }
-            }else if(action.equalsIgnoreCase("list") && type.equalsIgnoreCase("xml"))
-            {
-                Type typeXML =  TypeFactory.getTypeReq(DataType.XML);
-                try {
-                    JobHistory jobHistorys = new JobHistory();
-                    jobHistorys.setJobHistorys(listJob(request, response));
-                    String xmlListJobHistory = typeXML.getType(jobHistorys);
+                apiData.showData(response, typeJson.getType(jobHistoryService.listJobHis(request, response)));
 
-                    // print result
-                    PrintWriter out = response.getWriter();
-                    out.print(xmlListJobHistory);
-                    out.flush();
-                    out.close();
-                } catch (JAXBException e) {
-                    e.printStackTrace();
-                }
-            }else if(action.equalsIgnoreCase("list") && type.equalsIgnoreCase("text"))
-           {
-               Type typeText = TypeFactory.getTypeReq(DataType.TEXT);
-               try {
-                   String textListJob =  typeText.getType(listJob(request, response));
-                   // print result
-                   PrintWriter out = response.getWriter();
-                   out.print(textListJob);
-                   out.flush();
-                   out.close();
+            } else if (action.equalsIgnoreCase("list") && type.equalsIgnoreCase("xml")) {
+                Type typeXML = TypeFactory.getTypeReq(DataType.XML);
+                JobHistory jobHistorys = new JobHistory();
+                jobHistorys.setJobHistorys(jobHistoryService.listJobHis(request, response));
+                apiData.showData(response, typeXML.getType(jobHistorys));
 
-               } catch (JAXBException e) {
-                   e.printStackTrace();
-               }
-           }
+            } else if (action.equalsIgnoreCase("list") && type.equalsIgnoreCase("text")) {
+                Type typeText = TypeFactory.getTypeReq(DataType.TEXT);
+                apiData.showData(response, typeText.getType(jobHistoryService.listJobHis(request, response)));
+
+            }
         } else {
             response.getWriter().print("get url = action=list&type={xml,json,text}");
         }
 
     }
-    private void setJsonResponse(HttpServletRequest request, HttpServletResponse response) throws UnsupportedEncodingException {
-        request.setCharacterEncoding("utf-8");
-        response.setContentType("application/json;charset=UTF-8");
-    }
+
+
     private boolean getAction(HttpServletRequest request) {
         return request.getParameter("action") != null;
     }
 
-    private List<JobHistory> listJob(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-       List<JobHistory> list = jobHistoryDAO.findAll();
-       return list;
-    }
+
 }

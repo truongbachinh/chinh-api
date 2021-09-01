@@ -13,12 +13,23 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class DepartmentDaoImpl implements DepartmentDAO {
-    private static ConnectOracle connectedOracle = ConnectOracle.getInstance();
+    Connection conn;
+    {
+        try {
+            conn = connectedOracle.connection();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+    }
+
+
     @Override
     public List<Department> findAll() {
         List<Department> list = new ArrayList<>();
         try {
-            Connection conn = connectedOracle.connection();
+
             String viewAllQuery = "SELECT * from departments";
             PreparedStatement pre = conn.prepareStatement(viewAllQuery);
             ResultSet resultSet = pre.executeQuery();
@@ -31,9 +42,7 @@ public class DepartmentDaoImpl implements DepartmentDAO {
                 list.add(department);
             }
             conn.isClosed();
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        } catch (SQLException throwables) {
+        }  catch (SQLException throwables) {
             throwables.printStackTrace();
         }
         return list;
@@ -45,7 +54,6 @@ public class DepartmentDaoImpl implements DepartmentDAO {
     public Department findById(int id) {
         Department department = new Department();
         try {
-            Connection conn = connectedOracle.connection();
             String viewAllQuery = "SELECT * from departments where department_id = ?";
             PreparedStatement pre = conn.prepareStatement(viewAllQuery);
             pre.setInt(1,id);
@@ -57,8 +65,6 @@ public class DepartmentDaoImpl implements DepartmentDAO {
                 department.setLocationId(resultSet.getInt("location_id"));
             }
             conn.isClosed();
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
@@ -69,7 +75,6 @@ public class DepartmentDaoImpl implements DepartmentDAO {
     public boolean insertDepartment(Department department) {
         boolean flag = false;
         try {
-            Connection conn = connectedOracle.connection();
             String insertQuery = "INSERT INTO departments (department_id, department_name, manager_id, location_id)" +
                     "VALUES (?,?,?,?)";
             PreparedStatement pre = conn.prepareStatement(insertQuery);
@@ -83,8 +88,6 @@ public class DepartmentDaoImpl implements DepartmentDAO {
             conn.isClosed();
         } catch (SQLException e) {
             e.getMessage();
-        } catch (ClassNotFoundException e) {
-            e.getMessage();
         }
         return flag;
     }
@@ -93,7 +96,7 @@ public class DepartmentDaoImpl implements DepartmentDAO {
     public boolean updateDepartment(Department department) {
         boolean flag = false;
         try {
-            Connection conn = connectedOracle.connection();
+
             String insertQuery = "UPDATE  departments set department_name = ?, manager_id = ?, location_id = ? where  department_id = ?" +
                     "VALUES (?,?,?,?)";
             PreparedStatement pre = conn.prepareStatement(insertQuery);
@@ -107,8 +110,6 @@ public class DepartmentDaoImpl implements DepartmentDAO {
             conn.isClosed();
         } catch (SQLException e) {
             e.getMessage();
-        } catch (ClassNotFoundException e) {
-            e.getMessage();
         }
         return flag;
     }
@@ -117,7 +118,7 @@ public class DepartmentDaoImpl implements DepartmentDAO {
     public boolean deleteDepartment(int id) {
         boolean flag = false;
         try {
-            Connection conn = connectedOracle.connection();
+
             String deletetQuery = "DELETE FROM departments where department_id = ?";
             PreparedStatement pre = conn.prepareStatement(deletetQuery);
             pre.setInt(1, id);
@@ -127,8 +128,6 @@ public class DepartmentDaoImpl implements DepartmentDAO {
             conn.isClosed();
         } catch (SQLException e) {
             e.getMessage();
-        } catch (ClassNotFoundException e) {
-            e.getMessage();
         }
         return flag;
     }
@@ -137,13 +136,19 @@ public class DepartmentDaoImpl implements DepartmentDAO {
     }
 
     public static void main(String[] args) {
-        DepartmentDAO d = new DepartmentDaoImpl();
-        Department d1 = new Department();
-        d1.setDepartmentId(300);
-        d1.setDepartmentName("Shareholder");
-        d1.setDepartmentId(0);
-        d1.setDepartmentId(1700);
-        Boolean a  =    d.insertDepartment(d1);
-        System.out.println(a);
+//        DepartmentDAO d = new DepartmentDaoImpl();
+//        Department d1 = new Department();
+//        d1.setDepartmentId(300);
+//        d1.setDepartmentName("Shareholder");
+//        d1.setDepartmentId(0);
+//        d1.setDepartmentId(1700);
+//        Boolean a  =    d.insertDepartment(d1);
+//        System.out.println(a);
+
+//        DepartmentDAO d = new DepartmentDaoImpl();
+//        Department d1 = new Department();
+//        d1 = d.findById(60);
+//        System.out.println(d1.toString());
+
     }
 }

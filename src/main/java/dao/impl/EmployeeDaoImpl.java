@@ -12,14 +12,24 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class EmployeeDaoImpl implements EmployeeDAO {
-    private static ConnectOracle connectedOracle = ConnectOracle.getInstance();
+    Connection conn;
+
+    {
+        try {
+            conn = connectedOracle.connection();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+    }
 
 
     @Override
     public List<Employee> findAll() {
         List<Employee> list = new ArrayList<>();
         try {
-            Connection conn = connectedOracle.connection();
+
             String viewAllQuery = "SELECT * from EMPLOYEES";
             PreparedStatement pre = conn.prepareStatement(viewAllQuery);
             ResultSet resultSet = pre.executeQuery();
@@ -34,9 +44,7 @@ public class EmployeeDaoImpl implements EmployeeDAO {
                 employee.setSalary(resultSet.getLong("salary"));
                 list.add(employee);
             }
-            conn.isClosed();
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
+
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
@@ -48,7 +56,7 @@ public class EmployeeDaoImpl implements EmployeeDAO {
     public Employee findById(int id) {
         Employee employee = new Employee();
         try {
-            Connection conn = connectedOracle.connection();
+
             String viewAllQuery = "SELECT * from EMPLOYEES where employee_id = ?";
             PreparedStatement pre = conn.prepareStatement(viewAllQuery);
             pre.setInt(1, id);
@@ -63,9 +71,7 @@ public class EmployeeDaoImpl implements EmployeeDAO {
                 employee.setSalary(resultSet.getLong("salary"));
 
             }
-            conn.isClosed();
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
+
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
@@ -76,11 +82,10 @@ public class EmployeeDaoImpl implements EmployeeDAO {
     public boolean insertEmployee(Employee employee) {
         boolean flag = false;
         try {
-            Connection conn = connectedOracle.connection();
             PreparedStatement pre = null;
             String insertQuery = "INSERT INTO EMPLOYEES (employee_id, first_name, last_name, email, hire_date, job_id, salary)" +
                     "VALUES (?,?,?,?,?,?,?)";
-             pre = conn.prepareStatement(insertQuery);
+            pre = conn.prepareStatement(insertQuery);
             pre.setInt(1, employee.getEmployeeId());
             pre.setString(2, employee.getFirstName());
             pre.setString(3, employee.getLastName());
@@ -94,8 +99,6 @@ public class EmployeeDaoImpl implements EmployeeDAO {
             conn.isClosed();
         } catch (SQLException e) {
             e.getMessage();
-        } catch (ClassNotFoundException e) {
-            e.getMessage();
         }
         return flag;
     }
@@ -104,7 +107,7 @@ public class EmployeeDaoImpl implements EmployeeDAO {
     public boolean updateEmployee(Employee employee) {
         boolean flag = false;
         try {
-            Connection conn = connectedOracle.connection();
+
             PreparedStatement pre = null;
             String insertQuery = "UPDATE EMPLOYEES SET  first_name = ?, last_name = ?, email = ?, hire_date = ?, job_id = ?, salary =? when id = ?)" +
                     "VALUES (?,?,?,?,?,?,?)";
@@ -121,8 +124,6 @@ public class EmployeeDaoImpl implements EmployeeDAO {
             }
             conn.isClosed();
         } catch (SQLException e) {
-            e.getMessage();
-        } catch (ClassNotFoundException e) {
             e.getMessage();
         }
         return flag;
@@ -155,17 +156,9 @@ public class EmployeeDaoImpl implements EmployeeDAO {
 
     public static void main(String[] args) {
         EmployeeDAO d = new EmployeeDaoImpl();
-        Employee employee = new Employee();
-        employee.setEmployeeId(381);
-        employee.setFirstName("Truong");
-        employee.setLastName("Ba Chinh");
-        employee.setEmmail("chinhtb181@gmail.com");
-        employee.setHireDate("2009-10-10");
-        employee.setJobId("AD_VP");
-        employee.setSalary(17000);
 
-      boolean a =  d.insertEmployee(employee);
-        System.out.println(a);
+        Employee d1 = d.findById(-1);
+        System.out.println(d1.toString());
     }
 
 }
