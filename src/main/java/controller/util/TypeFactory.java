@@ -14,7 +14,7 @@ public class TypeFactory {
             case TEXT:
                 return new TEXT();
             default:
-                throw new IllegalArgumentException("This Type type is unsupported");
+                throw new IllegalArgumentException("This Type  is unsupported");
         }
     }
 }

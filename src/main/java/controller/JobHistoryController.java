@@ -36,37 +36,13 @@ public class JobHistoryController extends HttpServlet {
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
-        if (getAction(request)) {
-            String action = request.getParameter("action");
-            String type = request.getParameter("type");
-            if (action.equalsIgnoreCase("insert")) {
-                jobHistoryService.addJobHis(request, response);
-            } else if (action.equalsIgnoreCase("list") && type.equalsIgnoreCase("json")) {
-                Type typeJson = TypeFactory.getTypeReq(DataType.JSON);
-                apiData.showData(response, typeJson.getType(jobHistoryService.listJobHis(request, response)));
-
-            } else if (action.equalsIgnoreCase("list") && type.equalsIgnoreCase("xml")) {
-                Type typeXML = TypeFactory.getTypeReq(DataType.XML);
-                JobHistory jobHistorys = new JobHistory();
-                jobHistorys.setJobHistorys(jobHistoryService.listJobHis(request, response));
-                apiData.showData(response, typeXML.getType(jobHistorys));
-
-            } else if (action.equalsIgnoreCase("list") && type.equalsIgnoreCase("text")) {
-                Type typeText = TypeFactory.getTypeReq(DataType.TEXT);
-                apiData.showData(response, typeText.getType(jobHistoryService.listJobHis(request, response)));
-
-            }
-        } else {
-            response.getWriter().print("get url = action=list&type={xml,json,text}");
+        RequestContext requestContext = new RequestContext();
+        String action = request.getParameter("action");
+        if (action.equalsIgnoreCase("list")) {
+            requestContext.getListRequest(jobHistoryService.listJobHis(request,response), request, response);
         }
-
     }
 
-
-    private boolean getAction(HttpServletRequest request) {
-        return request.getParameter("action") != null;
-    }
 
 
 }

@@ -40,7 +40,10 @@ public class Employee implements Serializable {
     public void setEmployees(List<Employee> employees) {
         this.employees = employees;
     }
-
+    public void getInstance()
+    {
+        setEmployees(employees);
+    }
     public Employee() {
 
     }

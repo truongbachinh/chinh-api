@@ -40,7 +40,6 @@ public class JobHistoryServiceImpl implements JobHistoryService {
         Date endDate = jobHistory.getEndDate();
 
         JobHistory jobHisDB = jobHistoryDAO.findById(jobId);
-
         if (jobHisDB.getEmployeeId() != 0) {
             Logger.getLogger("job HisDB is existed");
             flag = false;

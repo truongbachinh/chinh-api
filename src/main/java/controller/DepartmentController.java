@@ -39,35 +39,11 @@ public class DepartmentController extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        if (getAction(request)) {
-            String action = request.getParameter("action");
-            String type = request.getParameter("type");
-            if (action.equals("insert")) {
-                departmentService.addDepartment(request, response);
-            } else if (action.equalsIgnoreCase("list") && type.equalsIgnoreCase("json")) {
-                Type jsonDept = TypeFactory.getTypeReq(DataType.JSON);
-                String jsonListDept = jsonDept.getType(departmentService.listDepartments(request, response));
-                apiData.showData(response, jsonListDept);
-
-            } else if (action.equalsIgnoreCase("list") && type.equalsIgnoreCase("xml")) {
-                Type xmlDept = TypeFactory.getTypeReq(DataType.XML);
-                Department departments = new Department();
-                departments.setDepartments(departmentService.listDepartments(request, response));
-                String xmlListDept = xmlDept.getType(departments);
-                apiData.showData(response, xmlListDept);
-
-            } else if (action.equalsIgnoreCase("list") && type.equalsIgnoreCase("text")) {
-                Type typeText = TypeFactory.getTypeReq(DataType.TEXT);
-                String textListDept = typeText.getType(departmentService.listDepartments(request, response));
-                apiData.showData(response, textListDept);
-            }
-        } else {
-            response.getWriter().print("get url = action=list&type={xml,json,text}");
+        RequestContext requestContext = new RequestContext();
+        String action = request.getParameter("action");
+        if (action.equalsIgnoreCase("list")) {
+            requestContext.getListRequest(departmentService.listDepartments(request, response), request, response);
         }
-    }
-
-    private boolean getAction(HttpServletRequest request) {
-        return request.getParameter("action") != null;
     }
 
 
