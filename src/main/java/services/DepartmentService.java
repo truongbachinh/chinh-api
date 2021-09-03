@@ -11,7 +11,8 @@ import java.util.List;
 
 public interface DepartmentService {
     DepartmentDAO departmentDAO =  new DepartmentDaoImpl();
-    List<Department> listDepartments(HttpServletRequest request, HttpServletResponse response);
+    List<Department> listDepartments();
+    Department getDepartment(String id);
     void addDepartment(HttpServletRequest request, HttpServletResponse response) throws IOException;
 
 }

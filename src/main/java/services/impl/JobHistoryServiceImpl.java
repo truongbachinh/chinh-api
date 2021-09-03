@@ -15,9 +15,16 @@ import java.util.logging.Logger;
 
 public class JobHistoryServiceImpl implements JobHistoryService {
     @Override
-    public List<JobHistory> listJobHis(HttpServletRequest request, HttpServletResponse response) {
+    public List<JobHistory> listJobHis() {
         List<JobHistory> list = jobHistoryDAO.findAll();
         return list;
+    }
+
+    @Override
+    public JobHistory getJobHistory(String id) {
+        JobHistory jobHistory = jobHistoryDAO.findById(id);
+
+        return jobHistory;
     }
 
     @Override

@@ -23,21 +23,39 @@ public class EmployeeServiceImpl implements EmployeeService {
         // test with ajax json api
         Employee employee = gson.fromJson(request.getReader(), Employee.class);
         if (validateEmployee(employee)) {
-            employeeDAO.insertEmployee(employee);
-            response.getWriter().println("Test Gson: Insert Successfully ");
+            boolean checkInsert = employeeDAO.insertEmployee(employee);
+            if (checkInsert) {
+                response.getWriter().println("Test Gson: Insert Successfully ");
+            }
+            else {
+                response.getWriter().println("Error cant not insert check email");
+            }
+
         }
+
     }
 
+
     @Override
-    public List<Employee> listEmployee(HttpServletRequest request, HttpServletResponse response) {
+    public List<Employee> getListEmployee() {
         List<Employee> list = employeeDAO.findAll();
         return list;
     }
 
+    @Override
+    public Employee getEmployee(String id) {
+
+        Employee employee = employeeDAO.findById(Integer.parseInt(id));
+        return employee;
+    }
+
+
     private boolean validateEmployee(Employee employee) {
         boolean flag = true;
         Integer empId = employee.getEmployeeId();
+        System.out.println(empId);
         Employee employeeDB = employeeDAO.findById(empId);
+        System.out.println(employeeDB.toString());
         String firstName = employee.getFirstName();
         String lastName = employee.getLastName();
         String email = employee.getEmail();
@@ -48,7 +66,7 @@ public class EmployeeServiceImpl implements EmployeeService {
         if (employeeDB.getEmployeeId() != 0) {
             Logger.getLogger("Employee is existed");
             flag = false;
-        } else if (0 > empId | empId < 100000) {
+        } else if (0 > empId | empId > 100000) {
             Logger.getLogger("empId Id should be lower than 100000 and more than 0");
             flag = false;
         } else if (firstName.isEmpty() | lastName.isEmpty()) {
@@ -61,6 +79,7 @@ public class EmployeeServiceImpl implements EmployeeService {
             Logger.getLogger("jobId is empty");
             flag = false;
         }
+        System.out.println(flag);
         return flag;
 
     }

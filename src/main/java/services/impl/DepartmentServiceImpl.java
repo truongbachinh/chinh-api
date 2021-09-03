@@ -13,9 +13,15 @@ import java.util.logging.Logger;
 
 public class DepartmentServiceImpl implements DepartmentService {
     @Override
-    public List<Department> listDepartments(HttpServletRequest request, HttpServletResponse response) {
+    public List<Department> listDepartments() {
         List<Department> list = departmentDAO.findAll();
         return list;
+    }
+
+    @Override
+    public Department getDepartment(String id) {
+        Department department = departmentDAO.findById(Integer.parseInt(id));
+        return department;
     }
 
     @Override
@@ -42,13 +48,13 @@ public class DepartmentServiceImpl implements DepartmentService {
         if (departmentDB.getDepartmentId() != 0) {
             Logger.getLogger("Department is existed");
             flag = false;
-        } else if (0 > departmentId | departmentId < 100000) {
+        } else if (0 > departmentId | departmentId > 100000) {
             Logger.getLogger("Department Id should be lower than 100000 and more than 0");
             flag = false;
-        } else if (0 > locationId | locationId < 100000) {
+        } else if (0 > locationId | locationId > 100000) {
             Logger.getLogger("Location Id should be lower than 100000 and more than 0");
             flag = false;
-        } else if (0 > managerId | managerId < 100000) {
+        } else if (0 > managerId | managerId > 100000) {
             Logger.getLogger("Manager Id should be lower than 100000 and more than 0");
             flag = false;
         } else if (departmentName.isEmpty()) {

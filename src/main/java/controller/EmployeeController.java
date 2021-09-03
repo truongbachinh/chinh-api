@@ -48,8 +48,18 @@ public class EmployeeController extends HttpServlet {
         RequestContext requestContext = new RequestContext();
         String action = request.getParameter("action");
         if (action.equalsIgnoreCase("list")) {
-            requestContext.getListRequest(employeeService.listEmployee(request, response), request, response);
+            requestContext.getListRequest(employeeService.getListEmployee(), request, response);
         }
+        else if(action.equalsIgnoreCase("el"))
+        {
+            String id = request.getParameter("id" );
+            requestContext.getListRequest(employeeService.getEmployee(id), request, response);
+        }
+        else if(action.equalsIgnoreCase("insert"))
+        {
+            employeeService.addEmployee(request,response);
+        }
+
     }
 
 

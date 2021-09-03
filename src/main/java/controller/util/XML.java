@@ -1,9 +1,11 @@
 package controller.util;
 
 
+import javax.servlet.http.HttpServletRequest;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
+import java.io.IOException;
 import java.io.StringWriter;
 import java.io.UnsupportedEncodingException;
 
@@ -37,4 +39,9 @@ public class XML implements Type {
         return xmlContent;
 
     }
+
+//    @Override
+//    public <T> Object addEl(Object tClass, T object, HttpServletRequest request) throws IOException {
+//        return null;
+//    }
 }

@@ -13,7 +13,6 @@ import java.util.List;
 
 public class EmployeeDaoImpl implements EmployeeDAO {
     Connection conn;
-
     {
         try {
             conn = connectedOracle.connection();

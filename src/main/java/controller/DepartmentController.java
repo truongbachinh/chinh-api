@@ -42,7 +42,7 @@ public class DepartmentController extends HttpServlet {
         RequestContext requestContext = new RequestContext();
         String action = request.getParameter("action");
         if (action.equalsIgnoreCase("list")) {
-            requestContext.getListRequest(departmentService.listDepartments(request, response), request, response);
+            requestContext.getListRequest(departmentService.listDepartments(), request, response);
         }
     }
 

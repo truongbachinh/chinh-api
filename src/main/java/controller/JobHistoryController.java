@@ -39,7 +39,7 @@ public class JobHistoryController extends HttpServlet {
         RequestContext requestContext = new RequestContext();
         String action = request.getParameter("action");
         if (action.equalsIgnoreCase("list")) {
-            requestContext.getListRequest(jobHistoryService.listJobHis(request,response), request, response);
+            requestContext.getListRequest(jobHistoryService.listJobHis(), request, response);
         }
     }
 

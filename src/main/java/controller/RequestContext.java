@@ -17,20 +17,16 @@ import services.impl.EmployeeServiceImpl;
 import services.impl.JobHistoryServiceImpl;
 
 import javax.inject.Inject;
-import javax.persistence.criteria.CriteriaBuilder;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.ws.rs.core.GenericEntity;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
 
 import java.io.IOException;
-import java.util.List;
 
 
 public class RequestContext {
     private String type;
     private String _URI;
+
     @Inject
     private DataTemplate apiData = new APIData();
 
@@ -47,24 +43,10 @@ public class RequestContext {
         json, xml, text;
     }
 
-//    public static void main(String[] args) {
-//        String str = "http://localhost:8888/Chinh_Intern_war_exploded/api-department?action=list&type=xml";
-//        int index = str.indexOf("?");
-//        if (index != -1) {
-//            System.out.println(str.substring(48, str.indexOf("?")));
-//        } else {
-//            System.out.println("You dont have question mark in your url");
-//        }
-//    }
-
     public <T> void getListRequest(T object, HttpServletRequest request, HttpServletResponse response) throws IOException {
-        type = request.getParameter("type");
-        Data data = Data.valueOf(type);
-
+        Data data = getData(request);
         _URI = request.getRequestURI().substring(27);
-
         String result = null;
-
         switch (data) {
             case json:
                 Type typeJSON = TypeFactory.getTypeReq(DataType.JSON);
@@ -75,32 +57,52 @@ public class RequestContext {
                 result = typeTEXT.getType(object);
                 break;
             case xml:
-
                 Type typeXML = TypeFactory.getTypeReq(DataType.XML);
                 // không biết cách generic @XmlRootElemt anotaion;
                 // [com.sun.istack.internal.SAXException2: unable to marshal type "java.util.ArrayList" as an element because it is missing an @XmlRootElement annotation]
                 // => giải pháp tạm thời
                 if (_URI.equalsIgnoreCase("api-employee")) {
                     Employee employees = new Employee();
-                    employees.setEmployees(employeeService.listEmployee(request, response));
-                    apiData.showData(response, typeXML.getType(employees));
+                    employees.setEmployees(employeeService.getListEmployee());
+                    result = typeXML.getType(employees);
                 } else if (_URI.equalsIgnoreCase("api-department")) {
-                    Department department = new Department();
-                    department.setDepartments(departmentService.listDepartments(request, response));
-                    apiData.showData(response, typeXML.getType(department));
+                    Department departments = new Department();
+                    departments.setDepartments(departmentService.listDepartments());
+                    result = typeXML.getType(departments);
                 } else if (_URI.equalsIgnoreCase("api-department")) {
                     JobHistory jobHistorys = new JobHistory();
-                    jobHistorys.setJobHistorys(jobHistoryService.listJobHis(request, response));
-                    apiData.showData(response, typeXML.getType(jobHistorys));
+                    jobHistorys.setJobHistorys(jobHistoryService.listJobHis());
+                    result = typeXML.getType(jobHistorys);
                 }
                 break;
-
             default:
                 throw new IllegalArgumentException("This Request is unsupported");
         }
 
         apiData.showData(response, result);
     }
+
+//    public <T> Object addElRequest(Object tClass, T object, HttpServletRequest request, HttpServletResponse response) throws IOException {
+//        Data data = getData(request);
+//        Object result = null;
+//        switch (data) {
+//            case json:
+//                Type typeJSON = TypeFactory.getTypeReq(DataType.JSON);
+//                result = typeJSON.addEl(tClass,object,request);
+//                break;
+//            default:
+//                throw new IllegalArgumentException("This Request is unsupported");
+//        }
+//        return result;
+//
+//    }
+
+
+    private Data getData(HttpServletRequest request) {
+        type = request.getParameter("type");
+        return Data.valueOf(type);
+    }
+
 
 
 }

@@ -14,6 +14,6 @@ public interface EmployeeService {
 
     EmployeeDAO employeeDAO = new EmployeeDaoImpl();
     void addEmployee(HttpServletRequest request, HttpServletResponse response) throws IOException;
-    List<Employee> listEmployee(HttpServletRequest request, HttpServletResponse response);
-
+    List<Employee> getListEmployee();
+    Employee getEmployee(String id);
 }
